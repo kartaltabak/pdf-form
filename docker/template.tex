@@ -1,0 +1,34 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{pdfpages}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{xcolor}
+\usepackage{graphicx}
+
+\usepackage[top=1.3cm, bottom=2.0cm, outer=2.5cm, inner=2.5cm, heightrounded,
+marginparwidth=1.5cm, marginparsep=0.4cm, margin=2.5cm]{geometry}
+
+%% Useful packages
+\usepackage{graphicx} %allows you to use jpg or png images. PDF is still recommended
+\usepackage[colorlinks=False]{hyperref} % add links inside PDF files
+
+\begin{document}
+\begin{textblock*}{5cm}(7cm,8.75cm) \small {{NAME}} \end{textblock*}
+\begin{textblock*}{15cm}(7cm,9.5cm) \small {{ADDRESS}} \end{textblock*}
+\begin{textblock*}{15cm}(7cm,10.25cm) \small {{PHONE}} \end{textblock*}
+\begin{textblock*}{15cm}(7cm,10.63cm) \small {{EMAIL}} \end{textblock*}
+\begin{textblock*}{15cm}(7cm,11.05cm) \small {{TCKNO}} \end{textblock*}
+\begin{textblock*}{15cm}(5.87cm,12.15cm) \small {\textcolor{white}{\rule{10cm}{0.34cm}}} \end{textblock*}
+\begin{textblock*}{15cm}(5.87cm,12.58cm) \small {\textcolor{white}{\rule{10cm}{0.34cm}}} \end{textblock*}
+\begin{textblock*}{15cm}(5.87cm,13.12cm) \small {\textcolor{white}{\rule{10cm}{0.34cm}}} \end{textblock*}
+\begin{textblock*}{15cm}(7cm,13.12cm) \small Ektedir. Amazon.com sipariş numarası: {{AMAZON_ORDER_NO}} \end{textblock*}
+\begin{textblock*}{15cm}(5.87cm,13.9cm) \small {\textcolor{white}{\rule{10cm}{0.34cm}}} \end{textblock*}
+\begin{textblock*}{15cm}(7cm,15.6cm) \small Kişisel kullanıma mahsus kitap \end{textblock*}
+%\begin{textblock*}{15cm}(2.28cm,20.38cm) \tiny X \end{textblock*}
+\begin{textblock*}{15cm}(2cm,22.5cm) \tiny \includegraphics[width=50mm]{Isim} \end{textblock*}
+\begin{textblock*}{15cm}(8.5cm,22.5cm) \tiny \includegraphics[width=50mm]{Imza} \end{textblock*}
+\begin{textblock*}{15cm}(18.17cm,22.1cm) \small {{SIGN_DAY}} {{SIGN_MONTH}} \hspace{0.5em} {{SIGN_YEAR}}\end{textblock*}
+\includepdf{UPS}
+\end{document}
