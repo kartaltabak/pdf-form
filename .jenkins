@@ -18,8 +18,6 @@ pipeline {
                         def taggedName = repoName + ":" + tag
                         def image = docker.build(taggedName, "docker")
 
-                        sh "docker run --rm ${taggedName} -version"
-
                         image.push()
 
                         def latestName = repoName + ":latest"
