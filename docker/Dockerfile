@@ -20,17 +20,15 @@ USER miktex
 WORKDIR /home/miktex
 RUN mpm --update
 
-COPY template.tex /
-COPY create-pdf.sh /
-COPY empty.png .
-COPY blank.pdf .
+COPY add-text.sh /usr/local/sbin/add-text
+COPY add-graphics.sh /usr/local/sbin/add-graphics
+COPY blank.pdf /
+COPY empty.png /
 
-RUN sed -e "s/{{.*}}//g" /template.tex > start.tex && \
-    cp empty.png Imza.png && \
-    cp empty.png Isim.png && \
-    cp blank.pdf UPS.pdf && \
-    pdflatex -synctex=1 -interaction=nonstopmode start.tex && \
-    rm -rf ./start* && \
-    rm -rf empty.png blank.pdf Imza.png Isim.png UPS.pdf
+RUN add-text x 1cm 2cm 3cm blank out && \
+    rm -rf document* && \
+    rm -rf out*
 
-ENV UPS_VERSION 1.0
+RUN add-graphics empty.png 1cm 2cm 3cm blank out && \
+    rm -rf document* && \
+    rm -rf out*
