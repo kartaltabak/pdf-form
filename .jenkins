@@ -14,7 +14,7 @@ pipeline {
                 script {
                     sh 'docker pull ubuntu:22.04'
                     docker.withRegistry('https://registry-1.docker.io', 'Dockerhub-kartaltabak') {
-                        def repoName = "kartaltabak/pdf-form"
+                        String repoName = "kartaltabak/pdf-form"
                         def taggedName = repoName + ":" + tag
                         def image = docker.build(taggedName, "docker")
 
