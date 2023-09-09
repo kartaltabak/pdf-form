@@ -2,6 +2,8 @@
 
 dockerBuildPipeline(
         mainBranchCron: '@weekly',
-        baseImage: 'ubuntu:22.04',
-        registryRepoName: 'kartaltabak/pdf-form'
+        ikmageBuilder: [
+                baseImage       : 'ubuntu:22.04',
+                registryRepoName: 'kartaltabak/pdf-form'
+        ]
 )
