@@ -39,4 +39,6 @@ USER root
 RUN rm -rf /blank.pdf && \
     rm -rf /empty.png
 
+RUN useradd --home-dir /home/jenkins --create-home --shell /bin/bash --uid 1000 jenkins
+
 USER miktex
