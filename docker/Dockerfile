@@ -35,9 +35,15 @@ RUN add-text x 1cm 2cm 3cm blank out && \
     rm -rf document* && \
     rm -rf out*
 
+COPY sample.tex /home/miktex/sample.tex
+
+RUN cd /home/miktex/ && \
+    pdflatex -interaction=nonstopmode -output-format=pdf sample.tex
+
 USER root
 RUN rm -rf /blank.pdf && \
-    rm -rf /empty.png
+    rm -rf /empty.png && \
+    rm -rf /home/miktex/sample.*
 
 RUN useradd --home-dir /home/jenkins --create-home --shell /bin/bash --uid 1000 jenkins
 

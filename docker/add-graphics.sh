@@ -38,7 +38,6 @@ cat <<EOF >> "${TEX_FILE}"
 \end{document}
 EOF
 
-cp "$PDF"* /home/miktex
 (cd /home/miktex && pdflatex -synctex=1 -interaction=nonstopmode "${TEX_FILE}")
 
 cp /home/miktex/document.pdf "$OUT_PDF"
