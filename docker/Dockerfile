@@ -27,6 +27,7 @@ RUN mpm --update
 
 COPY add-text.sh /usr/local/sbin/add-text
 COPY add-graphics.sh /usr/local/sbin/add-graphics
+COPY create-pdf-from-images.sh /usr/local/sbin/create-pdf-from-images
 COPY blank.pdf /
 COPY empty.png /
 
