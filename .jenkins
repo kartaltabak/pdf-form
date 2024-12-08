@@ -1,9 +1,0 @@
-@Library('github-jenkins-pipeline') _
-
-dockerBuildPipeline(
-        mainBranchCron: '@weekly',
-        imageBuilder: [
-                baseImage       : 'ubuntu:22.04',
-                registryRepoName: 'kartaltabak/pdf-form'
-        ]
-)
