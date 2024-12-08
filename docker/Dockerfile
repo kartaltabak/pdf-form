@@ -31,7 +31,7 @@ COPY create-pdf-from-images.sh /usr/local/sbin/create-pdf-from-images
 COPY blank.pdf /
 COPY empty.png /
 
-RUN add-text x 1cm 2cm 3cm blank out && cat /home/miktex/.miktex/texmfs/data/miktex/log/pdflatex.log && \
+RUN add-text x 1cm 2cm 3cm blank out && \
     rm -rf document* && \
     rm -rf out* && \
     add-graphics empty.png 1cm 2cm 3cm blank out && \
