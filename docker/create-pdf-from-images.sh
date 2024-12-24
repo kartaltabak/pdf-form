@@ -2,11 +2,18 @@
 
 IMAGE_DIR="."
 OUTPUT_PDF="merged_images.pdf"
-RESIZE="40%"
-ADDITIONAL_ARGS=("$@")  # Store all additional arguments passed to the script
+DEFAULT_RESIZE="40%"
+RESIZE="$DEFAULT_RESIZE"
+ADDITIONAL_ARGS=()
 
+if [[ $1 =~ ^[0-9]+%$ ]]; then
+    RESIZE="$1"
+    shift
+fi
 
-mkdir /tmp/foo
+ADDITIONAL_ARGS=("$@")
+
+mkdir -p /tmp/foo
 cp ./* /tmp/foo
 
 mapfile -t image_files < <(find /tmp/foo -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) | sort)
