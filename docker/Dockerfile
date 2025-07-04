@@ -1,7 +1,8 @@
-FROM ubuntu:22.04
+ARG UBUNTU_VERSION=24.04
+FROM ubuntu:${UBUNTU_VERSION}
 
 ARG DEBIAN_FRONTEND=noninteractive
-ENV TZ=Etc/UTC+3
+ENV TZ=Etc/UTC
 
 RUN apt-get update && \
     apt-get install -y \
@@ -13,7 +14,9 @@ RUN apt-get update && \
       img2pdf
 
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys D6BC243565B2087BC3F897C9277A7293F59E4889 && \
-    (echo "deb http://miktex.org/download/ubuntu jammy universe" > /etc/apt/sources.list.d/miktex.list )
+    . /etc/lsb-release && \
+    echo "deb http://miktex.org/download/ubuntu ${DISTRIB_CODENAME} universe" > /etc/apt/sources.list.d/miktex.list
+
 RUN apt-get update && \
     apt-get install -y miktex && \
     miktexsetup --shared=yes finish && \
@@ -49,6 +52,8 @@ RUN rm -rf /blank.pdf && \
     rm -rf /empty.png && \
     rm -rf /home/miktex/sample.*
 
-RUN useradd --home-dir /home/jenkins --create-home --shell /bin/bash --uid 1000 jenkins
+RUN usermod -u 1002 ubuntu && \
+    groupmod -g 1002 ubuntu && \
+    useradd --home-dir /home/jenkins --create-home --shell /bin/bash --uid 1000 jenkins
 
 USER miktex
