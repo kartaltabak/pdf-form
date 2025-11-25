@@ -11,7 +11,8 @@ RUN apt-get update && \
       perl-tk \
       ghostscript \
       imagemagick \
-      img2pdf
+      img2pdf \
+      poppler-utils
 
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys D6BC243565B2087BC3F897C9277A7293F59E4889 && \
     . /etc/lsb-release && \
