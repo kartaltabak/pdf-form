@@ -24,14 +24,16 @@ RUN apt-get update && \
     apt-get install -y miktex && \
     miktexsetup --shared=yes finish && \
     initexmf --admin --set-config-value [MPM]AutoInstall=1 && \
-    mpm --admin --update
+    miktex --admin packages update-package-database && \
+    miktex --admin packages update
 
 ARG MIKTEX_USER_HOME=/home/miktex
 RUN useradd --create-home --home-dir ${MIKTEX_USER_HOME} --shell /bin/bash --uid 1001 miktex
 
 USER miktex
 WORKDIR ${MIKTEX_USER_HOME}
-RUN mpm --update
+RUN miktex packages update-package-database && \
+    miktex packages update
 
 COPY add-text.sh /usr/local/sbin/add-text
 COPY add-graphics.sh /usr/local/sbin/add-graphics
@@ -40,10 +42,10 @@ COPY extract-images-from-pdf.sh /usr/local/sbin/extract-images-from-pdf
 COPY blank.pdf ${MIKTEX_USER_HOME}
 COPY empty.png ${MIKTEX_USER_HOME}
 
-RUN add-text x 1cm 2cm 3cm /blank.pdf out && \
+RUN add-text x 1cm 2cm 3cm blank.pdf out && \
     rm -rf document* && \
     rm -rf out* && \
-    add-graphics /empty.png 1cm 2cm 3cm /blank.pdf out && \
+    add-graphics empty.png 1cm 2cm 3cm blank.pdf out && \
     rm -rf document* && \
     rm -rf out*
 
