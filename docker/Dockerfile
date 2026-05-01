@@ -8,53 +8,54 @@ RUN apt-get update && \
     apt-get install -y \
       gnupg \
       ca-certificates \
+      curl \
       perl-tk \
       ghostscript \
       imagemagick \
       img2pdf \
       poppler-utils
 
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys D6BC243565B2087BC3F897C9277A7293F59E4889 && \
+RUN mkdir -p /usr/share/keyrings && \
+    curl -fsSL https://miktex.org/download/key | gpg --dearmor -o /usr/share/keyrings/miktex.gpg && \
     . /etc/lsb-release && \
-    echo "deb http://miktex.org/download/ubuntu ${DISTRIB_CODENAME} universe" > /etc/apt/sources.list.d/miktex.list
+    echo "deb [signed-by=/usr/share/keyrings/miktex.gpg] https://miktex.org/download/ubuntu ${DISTRIB_CODENAME} universe" > /etc/apt/sources.list.d/miktex.list
 
 RUN apt-get update && \
     apt-get install -y miktex && \
     miktexsetup --shared=yes finish && \
     initexmf --admin --set-config-value [MPM]AutoInstall=1 && \
-    mpm --admin --update
+    miktex --admin packages update-package-database && \
+    miktex --admin packages update
 
-RUN useradd --system --create-home --home-dir /home/miktex --shell /bin/bash -g root -G sudo -u 1001 miktex
+ARG MIKTEX_USER_HOME=/home/miktex
+RUN useradd --create-home --home-dir ${MIKTEX_USER_HOME} --shell /bin/bash --uid 1001 miktex
+
 USER miktex
-WORKDIR /home/miktex
-RUN mpm --update
+WORKDIR ${MIKTEX_USER_HOME}
+RUN miktex packages update-package-database && \
+    miktex packages update
 
 COPY add-text.sh /usr/local/sbin/add-text
 COPY add-graphics.sh /usr/local/sbin/add-graphics
 COPY create-pdf-from-images.sh /usr/local/sbin/create-pdf-from-images
 COPY extract-images-from-pdf.sh /usr/local/sbin/extract-images-from-pdf
-COPY blank.pdf /
-COPY empty.png /
+COPY blank.pdf ${MIKTEX_USER_HOME}
+COPY empty.png ${MIKTEX_USER_HOME}
 
-RUN add-text x 1cm 2cm 3cm blank out && \
+RUN add-text x 1cm 2cm 3cm blank.pdf out && \
     rm -rf document* && \
     rm -rf out* && \
-    add-graphics empty.png 1cm 2cm 3cm blank out && \
+    add-graphics empty.png 1cm 2cm 3cm blank.pdf out && \
     rm -rf document* && \
     rm -rf out*
 
-COPY sample.tex /home/miktex/sample.tex
+COPY sample.tex ${MIKTEX_USER_HOME}/sample.tex
 
-RUN cd /home/miktex/ && \
-    pdflatex -interaction=nonstopmode -output-format=pdf sample.tex
+RUN pdflatex -interaction=nonstopmode -output-format=pdf sample.tex
 
 USER root
-RUN rm -rf /blank.pdf && \
-    rm -rf /empty.png && \
-    rm -rf /home/miktex/sample.*
-
-RUN usermod -u 1002 ubuntu && \
-    groupmod -g 1002 ubuntu && \
-    useradd --home-dir /home/jenkins --create-home --shell /bin/bash --uid 1000 jenkins
+RUN rm -rf ${MIKTEX_USER_HOME}/blank.pdf && \
+    rm -rf ${MIKTEX_USER_HOME}/empty.png && \
+    rm -rf ${MIKTEX_USER_HOME}/sample.*
 
 USER miktex
