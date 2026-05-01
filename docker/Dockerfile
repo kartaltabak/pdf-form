@@ -12,7 +12,8 @@ RUN apt-get update && \
       perl-tk \
       ghostscript \
       imagemagick \
-      img2pdf
+      img2pdf \
+      poppler-utils
 
 RUN mkdir -p /usr/share/keyrings && \
     curl -fsSL https://miktex.org/download/key | gpg --dearmor -o /usr/share/keyrings/miktex.gpg && \
