@@ -13,9 +13,11 @@ RUN apt-get update && \
       imagemagick \
       img2pdf
 
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys D6BC243565B2087BC3F897C9277A7293F59E4889 && \
+RUN mkdir -p /usr/share/keyrings && \
+    gpg --batch --keyserver hkps://keyserver.ubuntu.com --recv-keys D6BC243565B2087BC3F897C9277A7293F59E4889 && \
+    gpg --batch --yes --export D6BC243565B2087BC3F897C9277A7293F59E4889 > /usr/share/keyrings/miktex.gpg && \
     . /etc/lsb-release && \
-    echo "deb http://miktex.org/download/ubuntu ${DISTRIB_CODENAME} universe" > /etc/apt/sources.list.d/miktex.list
+    echo "deb [signed-by=/usr/share/keyrings/miktex.gpg] http://miktex.org/download/ubuntu ${DISTRIB_CODENAME} universe" > /etc/apt/sources.list.d/miktex.list
 
 RUN apt-get update && \
     apt-get install -y miktex && \
@@ -38,7 +40,7 @@ COPY empty.png /
 RUN add-text x 1cm 2cm 3cm blank out && \
     rm -rf document* && \
     rm -rf out* && \
-    add-graphics empty.png 1cm 2cm 3cm blank out && \
+    add-graphics /empty.png 1cm 2cm 3cm blank out && \
     rm -rf document* && \
     rm -rf out*
 
